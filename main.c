@@ -2,24 +2,14 @@
 #include <stdlib.h>
 #include <glib.h>
 
-typedef struct node{
-	int value;
-	struct node *left;
-	struct node *right;
-}node;
+#include "util.h"
 
-node* CreateNode(int value)
-{
-	struct	node *newNode;
-	newNode = malloc(sizeof(node));
 
-	newNode->value= value;
-	newNode->left = NULL;
-	newNode->right = NULL;
 
-	return newNode;
-}
 
+/*
+ Inserting a node in a totaly un-balanced way
+*/
 void InsertNode(int value, struct node *root)
 {
 	if(value >= root->value)
@@ -37,10 +27,6 @@ void InsertNode(int value, struct node *root)
 		else
 			InsertNode(value, root->left);
 	}
-}
-void PrintNode(node *n)
-{
-	printf("\\%d\n",n->value);
 }
 
 void PrintTreePreOrder(node *n, short depth)
@@ -66,15 +52,6 @@ void PrintTreeInOrder(node *n)
 
 	if(n->right != NULL)
 		PrintTreeInOrder(n->right);
-}
-
-void PrintLine()
-{
-	int i;	
-	printf("\n");
-	for(i = 0; i< 80; ++i)
-		printf("-");
-	printf("\n");
 }
 
 int FindTreeDepth(node *n)
