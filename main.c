@@ -29,6 +29,42 @@ void InsertNode(int value, struct node *root)
 	}
 }
 
+node *RemoveNode(int value, node *n)
+{
+	node *tmp;
+	if(n != NULL)
+	{
+		if(value < n->value)
+		{
+			n->left = RemoveNode(value, n->left);	
+		}
+		else if(value > n->value)
+		{
+			n->right = RemoveNode(value, n->right);
+		}
+		else
+		{
+			if(n->right && n->left )
+			{
+				tmp = FindMinNode(n->right);
+				n->value = tmp->value;
+				n->right = RemoveNode(tmp->value,n->right);
+			}
+			else
+			{
+				tmp = n;
+				if(n->left == NULL)
+					n = n->right;
+				else if(n->right == NULL)
+					n = n->left;
+				free(tmp);
+			}
+		}
+	}
+	return n;
+}
+
+
 void PrintTreePreOrder(node *n, short depth)
 {
 	if(n != NULL)
@@ -52,6 +88,15 @@ void PrintTreeInOrder(node *n)
 
 	if(n->right != NULL)
 		PrintTreeInOrder(n->right);
+}
+
+void PrintTreePostOrder(node *n)
+{
+	if(n->left != NULL)
+		PrintTreePostOrder(n->left);
+	if(n->right != NULL)
+		PrintTreePostOrder(n->right);
+	PrintNode(n);
 }
 
 int FindTreeDepth(node *n)
@@ -205,40 +250,47 @@ int main()
 	node *root;
 
 	root = CreateNode(100);
-	InsertNode(15,root);
-	InsertNode(140,root);
-	InsertNode(108,root);
-	InsertNode(63,root);
-	InsertNode(45,root);
-	InsertNode(75,root);
-	InsertNode(132,root);
-	InsertNode(30,root);
+	InsertNode(15, root);
+	InsertNode(140, root);
+	InsertNode(108, root);
+	InsertNode(63, root);
+	InsertNode(45, root);
+	InsertNode(75, root);
+	InsertNode(132, root);
+	InsertNode(30, root);
 
-	InsertNode(10,root);
-	InsertNode(8,root);
-	InsertNode(150,root);
-	InsertNode(24,root);
-	InsertNode(80,root);
-	InsertNode(102,root);
-	InsertNode(120,root);
-	InsertNode(99,root);
-
+	InsertNode(10, root);
+	InsertNode(8, root);
+	InsertNode(150, root);
+	InsertNode(24, root);
+	InsertNode(80, root);
+	InsertNode(102, root);
+	InsertNode(120, root);
+	InsertNode(99, root);
+	InsertNode(154, root);
 
 	PrintLine();
 	printf("depth : %d",FindTreeDepth(root));
-
 	PrintLine();
 
+	printf("PostOrder\n");
+	PrintTreePostOrder(root);
+	PrintLine();
+
+	printf("PreOrder\n");
 	PrintTreePreOrder(root, 0);
-	
 	PrintLine();
 
-	PrintTreeInOrder(root);
-	
+	root = RemoveNode(140,root);
+	printf("PreOrder after removal of 140\n");
+	PrintTreePreOrder(root,0);
+	PrintLine();
+
+	printf("InOrder\n");
+	PrintTreeInOrder(root);	
 	PrintLine();
 
 	PrintBFS(root);
-
 	PrintLine();
 	PrintReverseBFS(root);
 	return 0;

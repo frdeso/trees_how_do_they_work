@@ -28,3 +28,14 @@ node* CreateNode(int value)
 
 	return newNode;
 }
+
+
+node *FindMinNode(node *n)
+{
+	if(n == NULL)
+		return NULL;
+	else if(n->left)
+		return	FindMinNode(n->left);
+	else
+		return n;
+}
